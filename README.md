@@ -1,4 +1,10 @@
 # HeroesApp
+## Crud completo basico de angular y firebase
+- HttpClient
+- transformar objeto en arreglo
+- sweet alert2
+- Animate.css
+- rxjs operators
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.2.
 

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HeroeModel } from '../models/heroe.model';
-import { map } from 'rxjs/operators';
+import { map, delay } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class HeroesService {
 
   constructor( private http: HttpClient ) { }
 
-  crearHeroe ( heroe: HeroeModel ) {
+  crearHeroe( heroe: HeroeModel ): Observable<any> {
 
     return this.http.post( `${ this.url }/heroes.json`, heroe)
       .pipe(
@@ -24,7 +25,7 @@ export class HeroesService {
 
   }
 
-  actualizarHeroe( heroe: HeroeModel) {
+  actualizarHeroe( heroe: HeroeModel): Observable<any> {
 
     const heroeTemp = {
       ...heroe
@@ -35,13 +36,14 @@ export class HeroesService {
 
   }
 
-  getHeroes() {
+  getHeroes(): Observable<any> {
     return this.http.get(`${ this.url }/heroes.json`)
       .pipe(
-          map( res => this.crearArreglo( res ))
+          map( res => this.crearArreglo( res )),
+          delay( 1000 ) // delay solo para que se vea el mensaje de carga si es muy rapido
       );
   }
-  private crearArreglo( heroesObj: object) {
+  private crearArreglo( heroesObj: object): any {
 
     const heroes: HeroeModel[] = [];
 
@@ -59,6 +61,17 @@ export class HeroesService {
     console.log( heroes );
 
     return heroes;
+  }
+
+  getHeroe( id: string ): Observable<any> {
+
+    return this.http.get(`${ this.url }/heroes/${ id }.json`);
+
+  }
+
+  borrarHeroe( id: string ): Observable<any> {
+
+    return this.http.delete(`${ this.url }/heroes/${ id }.json`);
   }
 
 }

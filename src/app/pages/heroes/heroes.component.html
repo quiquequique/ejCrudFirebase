@@ -10,14 +10,14 @@
     </div>
 </div>
 
-<table class="table mt-3 animate__animated animate__fadeIn animate__faster">
+<table *ngIf='!cargando' class="table mt-3 animate__animated animate__fadeIn animate__faster">
     <thead class="thead-dark">
         <tr>
             <th scope="col">#</th>
             <th scope="col">Nombre</th>
             <th scope="col">Poder</th>
             <th scope="col">Alive</th>
-            <th scope="col">Tools</th>
+            <th scope="col" class="text-right">Tools</th>
         </tr>
     </thead>
     <tbody>
@@ -29,12 +29,19 @@
                 <label *ngIf='heroe.vivo' class="badge badge-success">Vivo</label>
                 <label *ngIf='!heroe.vivo' class="badge badge-danger">Muerto</label>
             </td>
-            <td>@mdo</td>
+            <td class="text-right">
+                <button class="btn btn-info mr-1" [routerLink]="['/heroe', heroe.id]">
+                    <i class="fa fa-pen"></i>
+                </button>
+                <button class="btn btn-danger" (click)='borrarHeroe( heroe, i )'>
+                    <i class="fa fa-trash"></i>
+                </button>
+            </td>
         </tr>
     </tbody>
 </table>
 
-<div class="alert alert-info text-center mt-3">
+<div *ngIf='cargando' class="alert alert-info text-center mt-3 animate__animated animate__fadeIn animate__faster">
     <h4 class="alert-heading">Cargando</h4>
     <p>
         <i class="fa fa-biohazard fa-spin fa-2x mt-2"></i>
@@ -42,8 +49,8 @@
     <p class="mb-0">Espere por favor</p>
 </div>
 
-<div class="alert alert-warning text-center mt-3">
-    <h4 class="alert-heading">No hay registro</h4>
+<div *ngIf='!cargando && heroes.length === 0' class="alert alert-warning text-center mt-3 animate__animated animate__fadeIn animate__faster">
+    <h4 class="alert-heading">No hay registros</h4>
     <p>
         <i class="fa fa-exclamation fa-2x mt-2"></i>
     </p>
